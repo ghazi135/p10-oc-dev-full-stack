@@ -115,6 +115,3 @@ Pour le détail des commandes Angular (`ng generate`, tests, build), voir **`fro
 
 ---
 
-## Pistes de relecture (livrable)
-
-Relisez ce README en vous demandant : *« Si je n’ai jamais vu ce repo, est-ce que je sais quoi installer, dans quel ordre lancer les commandes, et où chercher le code ? »* Si une étape manque, ajoutez-la ici plutôt qu’en commentaire dans le code seul.
