@@ -1,0 +1,28 @@
+<nb-layout>
+  <nb-layout-header>
+    Status: {{ status }}
+  </nb-layout-header>
+
+    <nb-layout-column>
+      <nb-card>
+        <nb-card-body>
+          <form *ngIf="!user" #userForm="ngForm" (ngSubmit)="onSubmit()">
+            <input type="text" name="user" placeholder="Enter your name" ngModel required>
+            <button type="submit" [disabled]="!userForm.valid">Login</button>
+          </form>
+
+          <nb-chat *ngIf="user" title="{{user}}" size="medium" status="warning">
+            <nb-chat-message *ngFor="let message of messages"
+                             [message]="message.text"
+                             [reply]="message.reply"
+                             [sender]="message.user.name"
+                             [date]="message.date"
+                             [avatar]="message.user.avatar">
+            </nb-chat-message>
+          <nb-chat-form (send)="sendMessage($event, user)" [showButton]="true" [dropFiles]="false">
+          </nb-chat-form>
+        </nb-chat>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>
