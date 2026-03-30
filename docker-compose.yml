@@ -1,0 +1,22 @@
+name: p10-oc
+
+services:
+  back:
+    image: p10-oc-back:latest
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  front:
+    image: p10-oc-front:latest
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - back
+    restart: unless-stopped

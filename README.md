@@ -21,11 +21,32 @@ Application **Angular** (front) + **Spring Boot** (API WebSocket). Ce dépôt re
 | **Node.js** | 18 ou supérieur (LTS recommandé) | `node -v` |
 | **npm** | fourni avec Node | `npm -v` |
 
+Pour **Docker Compose** uniquement : installez [Docker Desktop](https://www.docker.com/products/docker-desktop/) (ou équivalent) avec Compose v2 (`docker compose`).
+
 > **Astuce :** notez les versions affichées si vous documentez un bug : ça aide souvent à reproduire le problème.
 
 ---
 
-## Démarrage rapide (ordre recommandé)
+## Démarrage avec Docker Compose
+
+À la **racine** du dépôt (là où se trouve `docker-compose.yml`) :
+
+```bash
+docker compose up --build
+```
+
+- **Interface** : [http://localhost:4200](http://localhost:4200) (Nginx sert le build de production Angular).
+- **API / WebSocket** : le conteneur « back » expose **8080** sur la machine hôte ; le chat utilise `ws://localhost:8080/chat` (déjà prévu dans le front).
+
+Le projet Compose s’appelle **`p10-oc`** (préfixe des conteneurs / réseau). Les images construites sont **`p10-oc-back`** et **`p10-oc-front`**.
+
+Arrêt : `Ctrl+C` dans le terminal, puis éventuellement `docker compose down`.
+
+Pour reconstruire après des changements de code : `docker compose up --build`.
+
+---
+
+## Démarrage rapide (sans Docker, ordre recommandé)
 
 ### 1. Cloner le dépôt
 
@@ -74,8 +95,9 @@ Le navigateur peut s’ouvrir sur **http://localhost:4200/**. Sinon, ouvrez cett
 
 ```
 .
-├── back/                 # Spring Boot (Java 17)
-├── front/                # Angular CLI
+├── back/                 # Spring Boot (Java 17) + Dockerfile
+├── front/                # Angular CLI + Dockerfile + nginx.conf
+├── docker-compose.yml    # back + front
 ├── YourCarYourWay.sql    # Modèle SQL de référence
 └── README.md             # Ce fichier
 ```
@@ -89,6 +111,7 @@ Pour le détail des commandes Angular (`ng generate`, tests, build), voir **`fro
 - **Port déjà utilisé** : un autre programme utilise 4200 ou 8080. Fermez l’autre appli ou changez le port (Angular : `ng serve --port 4300` ; Spring : propriétés `server.port` si besoin).
 - **`npm install` échoue** : vérifiez la version de Node (`node -v`), supprimez `front/node_modules` et relancez `npm install`.
 - **Le front ne parle pas au back** : vérifiez que le back est bien démarré et que les URLs / WebSocket côté front correspondent à votre configuration.
+- **Docker : le front ne se connecte pas au WebSocket** : vérifiez que le service `back` est bien « healthy » (logs sans erreur) et que le port **8080** n’est pas utilisé par un autre processus sur l’hôte.
 
 ---
 
